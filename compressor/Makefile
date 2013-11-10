@@ -1,4 +1,7 @@
-all: encode.exe decode.exe bs_unittest.exe gr_unittest.exe
+all: encode decode bs_unittest gr_unittest
+
+clean:
+	rm -f *.o encode decode out.txt canon.txt out.bit dec.log enc.log
 
 NMEA=$(wildcard *.NMEA)
 
@@ -6,41 +9,41 @@ encode.o: encode.c deltacode.h bitstream.h grcode.h
 grcode.o: grcode.c bitstream.h
 deltacode.o: deltacode.c grcode.h
 
-diff: out.txt
+diff: canon.txt out.txt
 	./diff.pl canon.txt out.txt
 
-out.txt: out.bit decode.exe
+out.txt: out.bit decode
 	./decode out.bit out.txt >dec.log
 
-test: out.txt #test1 test2
+test: canon.txt out.txt #test1 test2
 	tail -5 canon.txt
 	tail -5 out.txt
 
-test1: bs_unittest.exe
+test1: bs_unittest
 	./ut_bs
 
-test2: gr_unittest.exe
+test2: gr_unittest
 	echo  34567789 1 2 4 6 7 20 34567789 > /tmp/t.txt
 	./gr_unittest /tmp/t.txt 3
 
-encode.exe: encode.o bitstream.o grcode.o deltacode.o
+encode: encode.o bitstream.o grcode.o deltacode.o
 	gcc -g -o encode $^ -lm 
 
-decode.exe: decode.o bitstream.o grcode.o deltacode.o
+decode: decode.o bitstream.o grcode.o deltacode.o
 	gcc -g -o decode $^ -lm 
 
 canon.txt: check.pl $(NMEA)
 	./check.pl < $(NMEA) > canon.txt
 
-out.bit: encode.exe canon.txt
-	./encode.exe canon.txt out.bit 3 >enc.log
+out.bit: encode canon.txt
+	./encode canon.txt out.bit 3 >enc.log
 
 
-bs_unittest.exe: bs_unittest.o bitstream.o
-	gcc -g -o bs_unittest $^
+bs_unittest: bs_unittest.o bitstream.o
+	gcc -g -o bs_unittest $^ -lm
 
-gr_unittest.exe: gr_unittest.o bitstream.o grcode.o
-	gcc -g -o gr_unittest $^
+gr_unittest: gr_unittest.o bitstream.o grcode.o
+	gcc -g -o gr_unittest $^ -lm
 
 %.o: %.c
-	gcc -g -c $<
+	gcc -g -Wall -Werror -c $<
