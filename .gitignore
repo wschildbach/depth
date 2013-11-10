@@ -4,3 +4,13 @@
 build
 debug
 release
+*~
+*.o
+*.exe
+*stackdump
+*.bit
+*.zip
+*.log
+backup-2013-11-09
+PortugalAlgarveOlhao
+*.tgz
