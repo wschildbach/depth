@@ -24,10 +24,10 @@ test2: gr_unittest.exe
 	./gr_unittest /tmp/t.txt 3
 
 encode.exe: encode.o bitstream.o grcode.o deltacode.o
-	gcc -g -o encode $^
+	gcc -g -o encode $^ -lm 
 
 decode.exe: decode.o bitstream.o grcode.o deltacode.o
-	gcc -g -o decode $^
+	gcc -g -o decode $^ -lm 
 
 canon.txt: check.pl $(NMEA)
 	./check.pl < $(NMEA) > canon.txt
