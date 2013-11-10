@@ -25,7 +25,7 @@ void timedec(struct BITSTREAM *bs, int n, double *store)
 
 void coldec(struct BITSTREAM *bs, int n, double *store, int col)
 {
-  double h[2];
+  //  double h[2];
   int i;
   double scale = readBits(bs, 32);
   int Ml2 = readBits(bs, 8);
@@ -84,7 +84,7 @@ int main(int ac, char *av[])
   c = readBits(&bs, 8); printf("%c",c);
 
   c = readBits(&bs, 8); printf(" version %d\n",c);
-  n = readBits(&bs, 32); printf("lines: %ld\n",n);
+  n = readBits(&bs, 32); printf("lines: %d\n",n);
 
   store = malloc(6*sizeof(*store)*n);
 //	timedec(&bs, n,store);

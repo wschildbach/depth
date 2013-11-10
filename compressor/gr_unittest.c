@@ -33,7 +33,7 @@ int main(int ac, char *av[])
     long r;
     r = grsDecode(&bs, Ml2);
     printf("decoding %ld\n",r);
-    if (r != t) {fprintf(stderr,"error at %d\n",r);exit(20);}
+    if (r != t) {fprintf(stderr,"error at %ld\n",r);exit(20);}
   }
   fclose(f);
   return 0;

@@ -40,5 +40,6 @@ int main(int ac, char *av[])
   for (i=0; i<1000; i++) {
     t = readBits(&bs, size);
     CHECK(t,size);
-  }	
+  }
+  return 0;
 }

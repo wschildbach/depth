@@ -78,7 +78,7 @@ void _writeBits(struct BITSTREAM *bs, unsigned int bits, unsigned int nbits)
    remove this */
 void writeBits(struct BITSTREAM *bs, unsigned int bits, unsigned int nbits)
 {
-  int i,j;
+  int i;
   if (dbg) for (i=1; i <= nbits; i++) {putchar('0'+((bits>>(nbits-i))&1));}
   
   _writeBits(bs, bits,nbits);

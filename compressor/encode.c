@@ -48,6 +48,8 @@ int timeenc(struct BITSTREAM *bs, int n, const double *store)
   return bufferSize(bs) - nbits ;
 }
 
+static int _colenc(struct BITSTREAM *bs, int n, const double *store, int col, double scale, int Ml2);
+
 /* a wrapper routine to optimize for the best coding parameter */ 
 int colenc(struct BITSTREAM *bs, int n, const double *store, int col, double scale)
 {
@@ -70,13 +72,17 @@ int colenc(struct BITSTREAM *bs, int n, const double *store, int col, double sca
 
   printf("storing col %d at Ml2 = %d\n",col,minMl2);
   _colenc(bs,n,store,col,scale,minMl2);
+
+  return 0;
 }
 
 int _colenc(struct BITSTREAM *bs, int n, const double *store, int col, double scale, int Ml2)
 {
+#if 0
   double h[2];
-  int i;
   double emax = 0.0;
+#endif
+  int i;
   int nbits = bufferSize(bs);
   struct DELTACODE dc;
 
@@ -107,11 +113,11 @@ int _colenc(struct BITSTREAM *bs, int n, const double *store, int col, double sc
 
 int main(int ac, char *av[])
 {
-  int i;
+  //  int i;
   int bits ;
   int totbits = 0 ;
   int n = readfile(av[1]);
-  int Ml2 = atoi(av[3]);
+  //  int Ml2 = atoi(av[3]);
   struct BITSTREAM bs ; 
 
   printf("%d values\n",n);
@@ -121,7 +127,7 @@ int main(int ac, char *av[])
 
   // NEMC
   writeBits(&bs, 'N',8);writeBits(&bs, 'M',8);writeBits(&bs, 'E',8);writeBits(&bs, 'C',8);
-  writeBits(&bs, 0,8); // version 0
+  writeBits(&bs, '0',8); // version 0
 
   // number of lines
   writeBits(&bs, n,32);
